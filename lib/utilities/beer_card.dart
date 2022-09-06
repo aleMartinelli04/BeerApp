@@ -1,34 +1,56 @@
+import 'package:BeerApp/utilities/users_manager.dart';
 import 'package:flutter/material.dart';
 
 import '../api/punk_api.dart';
 import 'beer_popup.dart';
 
-class BeerCard extends Card {
-  final Beer beer;
+class BeerCard extends StatefulWidget {
+  final Beer _beer;
 
-  const BeerCard(this.beer, {super.key});
+  const BeerCard(this._beer, {super.key});
 
   @override
-  Widget build(BuildContext context) {
-    var leading = beer.image == null
-        ? const Icon(Icons.image)
-        : Image.network(beer.image!);
+  State<StatefulWidget> createState() => BeerCardState();
+}
 
-    var subtitle = beer.abv == -1
-        ? Text("IBU: ${beer.ibu}")
-        : beer.ibu == -1
-            ? Text("ABV: ${beer.abv}")
-            : Text("ABV: ${beer.abv}\nIBU: ${beer.ibu}");
+class BeerCardState extends State<BeerCard> {
+  @override
+  Widget build(BuildContext context) {
+    bool isFavorite = UsersManager().getCurrentUser().getFavoritesBeersIds().contains(widget._beer.id);
+
+    var leading = widget._beer.image == null
+        ? const Icon(Icons.image)
+        : Image.network(widget._beer.image!);
+
+    var subtitle = widget._beer.abv == -1
+        ? Text("IBU: ${widget._beer.ibu}")
+        : widget._beer.ibu == -1
+            ? Text("ABV: ${widget._beer.abv}")
+            : Text("ABV: ${widget._beer.abv}\nIBU: ${widget._beer.ibu}");
 
     return Card(
       child: ListTile(
         leading: leading,
-        title: Text(beer.name),
+        trailing: IconButton(
+          icon: isFavorite
+              ? const Icon(Icons.favorite, color: Colors.red)
+              : const Icon(Icons.favorite_border),
+          onPressed: () {
+            setState(() => isFavorite = !isFavorite);
+
+            if (isFavorite) {
+              UsersManager().getCurrentUser().addFavorite(widget._beer.id);
+            } else {
+              UsersManager().getCurrentUser().removeFavorite(widget._beer.id);
+            }
+          },
+        ),
+        title: Text(widget._beer.name),
         subtitle: subtitle,
         onTap: () => showDialog(
             context: context,
             builder: (BuildContext context) {
-              return BeerPopup(beer, context);
+              return BeerPopup(widget._beer, context);
             }),
       ),
     );

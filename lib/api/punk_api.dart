@@ -41,6 +41,23 @@ class PunkApi {
 
     return beers;
   }
+
+  Future<List<Beer>> getBeersByIDs(List<int> ids) async {
+    var response = await http.get(
+        Uri.parse("https://api.punkapi.com/v2/beers?ids=${ids.join("|")}"));
+    if (response.statusCode != 200) {
+      throw Exception("Failed to load beers");
+    }
+
+    var json = jsonDecode(response.body);
+
+    List<Beer> beers = [];
+    for (var beer in json) {
+      beers.add(Beer.fromJson(beer));
+    }
+
+    return beers;
+  }
 }
 
 class LinkBuilder {
@@ -109,6 +126,7 @@ class LinkBuilder {
 }
 
 class Beer {
+  final int id;
   final String name;
   final String firstBrewed;
   final String description;
@@ -117,11 +135,12 @@ class Beer {
   final double ibu;
   final List<String> foodPairing;
 
-  Beer(this.name, this.firstBrewed, this.description, this.image, this.abv,
+  Beer(this.id, this.name, this.firstBrewed, this.description, this.image, this.abv,
       this.ibu, this.foodPairing);
 
   static Beer fromJson(Map<String, dynamic> json) {
     return Beer(
+        json['id'],
         json['name'],
         json['first_brewed'],
         json['description'],

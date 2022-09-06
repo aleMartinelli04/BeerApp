@@ -1,4 +1,4 @@
-import 'package:BeerApp/pages/page_manager.dart';
+import 'package:BeerApp/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,9 +11,8 @@ class BeerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Beer App',
-      theme: ThemeData(primarySwatch: Colors.brown),
-      home: const PageManager()
-    );
+        title: 'Beer App',
+        theme: ThemeData(primarySwatch: Colors.brown),
+        home: const LoginPage());
   }
 }

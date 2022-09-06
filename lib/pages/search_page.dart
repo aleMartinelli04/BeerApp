@@ -1,5 +1,5 @@
 import 'package:BeerApp/pages/results_page.dart';
-import 'package:BeerApp/pages/year_month_controller.dart';
+import 'package:BeerApp/utilities/year_month_controller.dart';
 import 'package:BeerApp/utilities/year_month_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -19,11 +19,9 @@ class SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     final TextEditingController nameController = TextEditingController();
 
-    final YearMonthController brewedBeforeController =
-        YearMonthController(linkBuilder.brewedBefore);
+    final YearMonthController brewedBeforeController = YearMonthController();
 
-    final YearMonthController brewedAfterController =
-        YearMonthController(linkBuilder.brewedAfter);
+    final YearMonthController brewedAfterController = YearMonthController();
 
     return ListView(
       padding: const EdgeInsets.only(left: 18, top: 10, right: 18),
@@ -42,11 +40,23 @@ class SearchPageState extends State<SearchPage> {
         YearMonthPicker(brewedAfterController),
         const Padding(padding: EdgeInsets.all(10)),
         TextButton(
-            onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) {
-                    return ResultsPage(linkBuilder: linkBuilder);
-                  }),
-                ),
+            onPressed: () {
+              linkBuilder.name(nameController.text);
+              linkBuilder.brewedBefore(
+                brewedBeforeController.getYear(),
+                brewedBeforeController.getMonth(),
+              );
+              linkBuilder.brewedAfter(
+                brewedAfterController.getYear(),
+                brewedAfterController.getMonth(),
+              );
+
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) {
+                  return ResultsPage(linkBuilder: linkBuilder);
+                }),
+              );
+            },
             child: const Text("Search")),
         TextButton(
             onPressed: () {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../pages/year_month_controller.dart';
+import 'year_month_controller.dart';
 
 class YearMonthPicker extends StatefulWidget {
   late final MonthPicker monthPicker;
@@ -21,7 +21,7 @@ class YearMonthPicker extends StatefulWidget {
     return monthPicker._month;
   }
 
-  int getYear() {
+  int? getYear() {
     return yearPicker._year;
   }
 
@@ -44,9 +44,7 @@ class _YearMonthPickerState extends State<YearMonthPicker> {
 }
 
 class CustomYearPicker extends StatefulWidget {
-  int _year = DateTime
-      .now()
-      .year;
+  int? _year;
   final YearMonthController controller;
   final TextEditingController textController = TextEditingController();
 
@@ -70,17 +68,12 @@ class _CustomYearPickerState extends State<CustomYearPicker> {
           label: Text("Year"),
         ),
         keyboardType: TextInputType.number,
-        onChanged: (String value) {
-          if (value == "") {
-            return;
-          }
-
-          widget._year = int.parse(value);
-          widget.controller.updateLink();
-        },
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
         ],
+        onChanged: (value) {
+          widget._year = value.isEmpty ? null : int.parse(value);
+        },
         controller: widget.textController,
       ),
     );
@@ -88,23 +81,18 @@ class _CustomYearPickerState extends State<CustomYearPicker> {
 }
 
 class MonthPicker extends StatefulWidget {
-  int _month = DateTime
-      .now()
-      .month;
+  int _month = 0;
   final YearMonthController controller;
 
   MonthPicker({super.key, required this.controller});
 
   @override
   State<MonthPicker> createState() => _MonthPickerState();
-
-  int getSelectedMonth() {
-    return _month;
-  }
 }
 
 class _MonthPickerState extends State<MonthPicker> {
   final List<String> months = [
+    "---------",
     "January",
     "February",
     "March",
@@ -126,12 +114,11 @@ class _MonthPickerState extends State<MonthPicker> {
       items: [
         for (var i = 0; i < months.length; i++)
           DropdownMenuItem(
-            value: i + 1,
+            value: i,
             child: Text(months[i]),
           )
       ],
       onChanged: (value) {
-        widget.controller.updateLink();
         setState(() {
           widget._month = value!;
         });

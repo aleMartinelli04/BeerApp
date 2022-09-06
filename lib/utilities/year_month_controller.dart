@@ -2,20 +2,17 @@ import 'package:BeerApp/utilities/year_month_picker.dart';
 
 class YearMonthController {
   late YearMonthPicker _picker;
-  final Function _onUpdateLink;
-
-  YearMonthController(this._onUpdateLink);
 
   void setPicker(YearMonthPicker picker) {
     _picker = picker;
   }
 
-  String getMonthYear() {
-    return "${_picker.getMonth()}-${_picker.getYear()}";
+  int getMonth() {
+    return _picker.getMonth();
   }
 
-  void updateLink() {
-    _onUpdateLink(getMonthYear());
+  int? getYear() {
+    return _picker.getYear();
   }
 
   void reset() {

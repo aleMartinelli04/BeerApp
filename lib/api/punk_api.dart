@@ -6,6 +6,7 @@ var punkApi = PunkApi();
 
 class PunkApi {
   Future<List<Beer>> getBeers(LinkBuilder builder) async {
+    print(builder.build());
     var response = await http.get(builder.build());
     if (response.statusCode != 200) {
       throw Exception("Failed to load beers");

@@ -1,5 +1,5 @@
+import 'package:BeerApp/pages/results_page.dart';
 import 'package:BeerApp/pages/year_month_controller.dart';
-import 'package:BeerApp/utilities/beer_card.dart';
 import 'package:BeerApp/utilities/year_month_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -42,43 +42,11 @@ class SearchPageState extends State<SearchPage> {
         YearMonthPicker(brewedAfterController),
         const Padding(padding: EdgeInsets.all(10)),
         TextButton(
-            onPressed: () {
-              if (nameController.text.isNotEmpty) {
-                linkBuilder.name(nameController.text.replaceAll(" ", "_"));
-              } else {
-                linkBuilder.name(null);
-              }
-
-              punkApi.getBeers(linkBuilder).then((beers) {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => Scaffold(
-                      appBar: AppBar(
-                        title: const Text("Search results"),
-                      ),
-                      body: ListView(
-                        children: beers.map((beer) => BeerCard(beer)).toList(),
-                      ),
-                    ),
-                  ),
-                );
-              }).catchError((e) {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => Scaffold(
-                      appBar: AppBar(
-                        title: const Text("Search results"),
-                      ),
-                      body: Center(
-                          child: Text(
-                        e.toString().split("Exception: ")[1],
-                        textAlign: TextAlign.center,
-                      )),
-                    ),
-                  ),
-                );
-              });
-            },
+            onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) {
+                    return ResultsPage(linkBuilder: linkBuilder);
+                  }),
+                ),
             child: const Text("Search")),
         TextButton(
             onPressed: () {

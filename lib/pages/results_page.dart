@@ -49,7 +49,7 @@ class ResultsPageState extends State<ResultsPage> {
           context: context,
           builder: (context2) => AlertDialog(
                 title: const Text("Error"),
-                content: Text(e.toString().split("Exception: ")[1]),
+                content: Text(e.toString().replaceFirst("Exception: ", "")),
                 actions: [
                   TextButton(
                       onPressed: () {

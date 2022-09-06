@@ -6,7 +6,6 @@ var punkApi = PunkApi();
 
 class PunkApi {
   Future<List<Beer>> getBeers(LinkBuilder builder) async {
-    print(builder.build());
     var response = await http.get(builder.build());
     if (response.statusCode != 200) {
       throw Exception("Failed to load beers");
@@ -127,8 +126,8 @@ class Beer {
         json['first_brewed'],
         json['description'],
         json['image_url'],
-        json['abv'] ?? -1,
-        json['ibu'] ?? -1,
+        json['abv'] == null ? -1 : json['abv'].toDouble(),
+        json['ibu'] == null ? -1 : json['ibu'].toDouble(),
         json['food_pairing'].map<String>((e) => e.toString()).toList());
   }
 }

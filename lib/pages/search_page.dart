@@ -38,34 +38,41 @@ class SearchPageState extends State<SearchPage> {
         const Padding(padding: EdgeInsets.all(10)),
         const Text("Brewed after"),
         YearMonthPicker(brewedAfterController),
-        const Padding(padding: EdgeInsets.all(10)),
-        TextButton(
-            onPressed: () {
-              linkBuilder.name(nameController.text);
-              linkBuilder.brewedBefore(
-                brewedBeforeController.getYear(),
-                brewedBeforeController.getMonth(),
-              );
-              linkBuilder.brewedAfter(
-                brewedAfterController.getYear(),
-                brewedAfterController.getMonth(),
-              );
+        const Padding(padding: EdgeInsets.all(30)),
+        Row(
+          children: [
+            const Spacer(),
+            ElevatedButton(
+                onPressed: () {
+                  linkBuilder.name(nameController.text);
+                  linkBuilder.brewedBefore(
+                    brewedBeforeController.getYear(),
+                    brewedBeforeController.getMonth(),
+                  );
+                  linkBuilder.brewedAfter(
+                    brewedAfterController.getYear(),
+                    brewedAfterController.getMonth(),
+                  );
 
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) {
-                  return ResultsPage(linkBuilder: linkBuilder);
-                }),
-              );
-            },
-            child: const Text("Search")),
-        TextButton(
-            onPressed: () {
-              linkBuilder.reset();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) {
+                      return ResultsPage(linkBuilder: linkBuilder);
+                    }),
+                  );
+                },
+                child: const Text("Search")),
+            const Spacer(),
+            ElevatedButton(
+                onPressed: () {
+                  linkBuilder.reset();
 
-              nameController.clear();
-              setState(() {});
-            },
-            child: const Text("Reset"))
+                  nameController.clear();
+                  setState(() {});
+                },
+                child: const Text("Reset")),
+            const Spacer(),
+          ],
+        )
       ],
     );
   }

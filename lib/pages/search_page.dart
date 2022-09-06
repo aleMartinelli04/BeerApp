@@ -69,7 +69,11 @@ class SearchPageState extends State<SearchPage> {
                       appBar: AppBar(
                         title: const Text("Search results"),
                       ),
-                      body: Text(e.toString().split("Exception: ")[1]),
+                      body: Center(
+                          child: Text(
+                        e.toString().split("Exception: ")[1],
+                        textAlign: TextAlign.center,
+                      )),
                     ),
                   ),
                 );

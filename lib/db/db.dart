@@ -131,7 +131,6 @@ class User {
   }
 
   Map<String, dynamic> toMap() {
-    print(getFavorites());
     return {
       "email": email,
       "password": password,
@@ -140,12 +139,11 @@ class User {
   }
 
   static User fromMap(Map<String, dynamic> map) {
-    print("FAV" + map['favorites']);
     List<int> favorites = [];
     for (var id in map['favorites'].split('-')) {
       favorites.add(int.parse(id));
     }
-    print("FAV2"+favorites.join('-'));
+
     return User(map['email'], map['password'], favorites: favorites);
   }
 

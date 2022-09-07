@@ -1,6 +1,7 @@
+import 'package:BeerApp/db/db.dart';
 import 'package:BeerApp/pages/page_manager.dart';
 import 'package:BeerApp/pages/register_page.dart';
-import 'package:BeerApp/utilities/users_manager.dart';
+import 'package:BeerApp/utilities/exception_alert.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -39,43 +40,33 @@ class LoginPageState extends State<LoginPage> {
               const Padding(padding: EdgeInsets.all(30)),
               ElevatedButton(
                 onPressed: () {
-                  try {
-                    String mail = _emailController.text;
-                    String password = _passwordController.text;
+                  String mail = _emailController.text;
+                  String password = _passwordController.text;
 
-                    if (mail.isEmpty || password.isEmpty) {
-                      throw Exception("Empty fields");
-                    }
-
-                    UsersManager().checkUser(mail, password);
-                    UsersManager().login(mail, password);
-
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) {
-                        return const PageManager();
-                      }),
-                    );
-
-                    _emailController.clear();
-                    _passwordController.clear();
-                  } catch (e) {
+                  if (mail.isEmpty || password.isEmpty) {
                     showDialog(
                         context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text("Error"),
-                            content: Text(e.toString()),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text("OK"),
-                              ),
-                            ],
-                          );
-                        });
+                        builder: ExceptionAlertDialog(Exception("Empty fields"))
+                            .build);
+                    return;
                   }
+
+                  Database().checkUser(mail, password).then((value) {
+                    Database().login(mail, password).then((value) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) {
+                          return const PageManager();
+                        }),
+                      );
+                    });
+                  }).catchError((e) {
+                    showDialog(
+                        context: context,
+                        builder: ExceptionAlertDialog(e).build);
+                  });
+
+                  _emailController.clear();
+                  _passwordController.clear();
                 },
                 child: const Text("Login"),
               ),

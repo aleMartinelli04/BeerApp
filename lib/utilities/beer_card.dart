@@ -1,7 +1,7 @@
-import 'package:BeerApp/utilities/users_manager.dart';
 import 'package:flutter/material.dart';
 
 import '../api/punk_api.dart';
+import '../db/db.dart';
 import 'beer_popup.dart';
 
 class BeerCard extends StatefulWidget {
@@ -16,7 +16,7 @@ class BeerCard extends StatefulWidget {
 class BeerCardState extends State<BeerCard> {
   @override
   Widget build(BuildContext context) {
-    bool isFavorite = UsersManager().getCurrentUser().getFavoritesBeersIds().contains(widget._beer.id);
+    bool isFavorite = Database().currentUser.getFavorites().contains(widget._beer.id);
 
     var leading = widget._beer.image == null
         ? const Icon(Icons.image)
@@ -39,9 +39,9 @@ class BeerCardState extends State<BeerCard> {
             setState(() => isFavorite = !isFavorite);
 
             if (isFavorite) {
-              UsersManager().getCurrentUser().addFavorite(widget._beer.id);
+              Database().currentUser.addFavorite(widget._beer.id);
             } else {
-              UsersManager().getCurrentUser().removeFavorite(widget._beer.id);
+              Database().currentUser.removeFavorite(widget._beer.id);
             }
           },
         ),

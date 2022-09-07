@@ -1,8 +1,10 @@
+import 'package:BeerApp/db/db.dart';
 import 'package:BeerApp/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(const BeerApp());
+  Database().setup();
 }
 
 class BeerApp extends StatelessWidget {

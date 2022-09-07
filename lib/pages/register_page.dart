@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../utilities/users_manager.dart';
+import '../db/db.dart';
+import '../utilities/exception_alert.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -46,26 +47,33 @@ class RegisterPageState extends State<RegisterPage> {
                       throw Exception("Empty fields");
                     }
 
-                    UsersManager().addUser(mail, password);
-
-                    showDialog(
-                      context: context,
-                      builder: (context2) {
-                        return AlertDialog(
-                          title: const Text("Success"),
-                          content: const Text("User registered"),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.pop(context2);
-                              },
-                              child: const Text("Ok"),
-                            )
-                          ],
+                    Database().checkIfUserDoesNotExist(mail).then((value) {
+                      Database().addUser(mail, password).then((value) {
+                        showDialog(
+                          context: context,
+                          builder: (context2) {
+                            return AlertDialog(
+                              title: const Text("Success"),
+                              content: const Text("User registered"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context2);
+                                  },
+                                  child: const Text("Ok"),
+                                )
+                              ],
+                            );
+                          },
                         );
-                      },
-                    );
+                      });
+                    }).catchError((e) {
+                      showDialog(
+                        context: context,
+                        builder: ExceptionAlertDialog(e).build,
+                      );
+                    });
 
                     _emailController.clear();
                     _passwordController.clear();

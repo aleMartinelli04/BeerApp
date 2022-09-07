@@ -1,8 +1,8 @@
-import 'package:BeerApp/utilities/users_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../api/punk_api.dart';
+import '../db/db.dart';
 import '../utilities/beer_card.dart';
 
 class FavoriteBeersPage extends StatefulWidget {
@@ -30,7 +30,7 @@ class FavoriteBeersState extends State<FavoriteBeersPage> {
     });
 
     punkApi
-        .getBeersByIDs(UsersManager().getCurrentUser().getFavoritesBeersIds())
+        .getBeersByIDs(Database().currentUser.getFavorites())
         .then((beers) {
       if (beers.isEmpty) {
         setState(() {

@@ -16,7 +16,8 @@ class BeerCard extends StatefulWidget {
 class BeerCardState extends State<BeerCard> {
   @override
   Widget build(BuildContext context) {
-    bool isFavorite = Database().currentUser.getFavorites().contains(widget._beer.id);
+    bool isFavorite =
+        Database().currentUser.getFavorites().contains(widget._beer.id);
 
     var leading = widget._beer.image == null
         ? const Icon(Icons.image)

@@ -1,4 +1,5 @@
 import 'package:BeerApp/pages/homepage.dart';
+import 'package:BeerApp/pages/profile_page.dart';
 import 'package:BeerApp/pages/search_page.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +26,15 @@ class PageManagerState extends State<PageManager> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('BeerApp'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ProfilePage()));
+              },
+            )
+          ],
         ),
         body: _widgets[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(

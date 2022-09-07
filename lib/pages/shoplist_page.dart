@@ -17,7 +17,7 @@ class ShopListPageState extends State<ShopListPage> {
   final _numberOfPostsPerRequest = 8;
 
   final PagingController<int, Beer> _pagingController =
-  PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 1);
 
   late PagedListView content = PagedListView<int, Beer>(
     pagingController: _pagingController,
@@ -45,7 +45,6 @@ class ShopListPageState extends State<ShopListPage> {
     punkApi
         .getBeersByIDs(Database().currentUser.getShopList(), page: pageKey)
         .then((beers) {
-
       final isLastPage = beers.length < _numberOfPostsPerRequest;
       if (isLastPage) {
         _pagingController.appendLastPage(beers);
@@ -79,6 +78,47 @@ class ShopListPageState extends State<ShopListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return content;
+    return Column(
+      children: [
+        Row(
+          children: [
+            const Spacer(),
+            IconButton(
+              icon: const Icon(Icons.shopping_cart_checkout),
+              onPressed: Database().currentUser.getShopList().isEmpty
+                  ? null
+                  : () {
+                      User user = Database().currentUser;
+                      int beerCount = user.getShopList().length;
+
+                      user.getShopList().clear();
+                      Database().updateUser(user);
+
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text("Shop List"),
+                              content: Text("You have bought $beerCount beers"),
+                              actions: [
+                                TextButton(
+                                  child: const Text("OK"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                )
+                              ],
+                            );
+                          });
+                      _pagingController.refresh();
+                    },
+            ),
+          ],
+        ),
+        Expanded(
+          child: content,
+        ),
+      ],
+    );
   }
 }

@@ -34,9 +34,11 @@ class _YearMonthPickerState extends State<YearMonthPicker> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         widget.monthPicker,
-        const Padding(padding: EdgeInsets.all(20)),
+        const SizedBox(width: 20),
         widget.yearPicker,
       ],
     );
@@ -61,8 +63,7 @@ class CustomYearPicker extends StatefulWidget {
 class _CustomYearPickerState extends State<CustomYearPicker> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 80,
+    return Expanded(
       child: TextFormField(
         decoration: const InputDecoration(
           label: Text("Year"),
@@ -110,6 +111,7 @@ class _MonthPickerState extends State<MonthPicker> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<int>(
+      menuMaxHeight: 200,
       value: widget._month,
       items: [
         for (var i = 0; i < months.length; i++)

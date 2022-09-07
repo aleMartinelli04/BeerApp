@@ -3,7 +3,7 @@ import 'package:BeerApp/pages/profile_page.dart';
 import 'package:BeerApp/pages/search_page.dart';
 import 'package:flutter/material.dart';
 
-import 'favorite_beers.dart';
+import 'favorite_beers_page.dart';
 
 class PageManager extends StatefulWidget {
   const PageManager({super.key});

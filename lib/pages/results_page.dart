@@ -1,5 +1,6 @@
 import 'package:BeerApp/api/punk_api.dart';
 import 'package:BeerApp/utilities/beer_card.dart';
+import 'package:BeerApp/utilities/exception_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -20,10 +21,11 @@ class ResultsPageState extends State<ResultsPage> {
 
   @override
   void initState() {
+    super.initState();
+
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    super.initState();
   }
 
   @override
@@ -44,21 +46,10 @@ class ResultsPageState extends State<ResultsPage> {
         final nextPageKey = pageKey + 1;
         _pagingController.appendPage(beers, nextPageKey);
       }
-    } catch (e) {
+    } on Exception catch (e) {
       showDialog(
           context: context,
-          builder: (context2) => AlertDialog(
-                title: const Text("Error"),
-                content: Text(e.toString().replaceFirst("Exception: ", "")),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.of(context2).pop();
-                        Navigator.pop(context);
-                      },
-                      child: const Text("OK"))
-                ],
-              ));
+          builder: ExceptionAlertDialog(e).build);
     }
   }
 

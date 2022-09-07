@@ -42,9 +42,9 @@ class PunkApi {
     return beers;
   }
 
-  Future<List<Beer>> getBeersByIDs(List<int> ids) async {
-    var response = await http.get(
-        Uri.parse("https://api.punkapi.com/v2/beers?ids=${ids.join("|")}"));
+  Future<List<Beer>> getBeersByIDs(List<int> ids, {int page = 0}) async {
+    var response = await http.get(Uri.parse(
+        "https://api.punkapi.com/v2/beers?ids=${ids.join("|")}&page=$page"));
     if (response.statusCode != 200) {
       throw Exception("Failed to load beers");
     }
@@ -135,8 +135,8 @@ class Beer {
   final double ibu;
   final List<String> foodPairing;
 
-  Beer(this.id, this.name, this.firstBrewed, this.description, this.image, this.abv,
-      this.ibu, this.foodPairing);
+  Beer(this.id, this.name, this.firstBrewed, this.description, this.image,
+      this.abv, this.ibu, this.foodPairing);
 
   static Beer fromJson(Map<String, dynamic> json) {
     return Beer(

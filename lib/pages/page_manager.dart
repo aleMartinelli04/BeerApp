@@ -1,6 +1,7 @@
 import 'package:BeerApp/pages/homepage.dart';
 import 'package:BeerApp/pages/profile_page.dart';
 import 'package:BeerApp/pages/search_page.dart';
+import 'package:BeerApp/pages/shoplist_page.dart';
 import 'package:flutter/material.dart';
 
 import 'favorite_beers_page.dart';
@@ -16,7 +17,8 @@ class PageManagerState extends State<PageManager> {
   final List<Widget> _widgets = [
     const HomePage(),
     const SearchPage(),
-    const FavoriteBeersPage()
+    const FavoriteBeersPage(),
+    const ShopListPage()
   ];
 
   int _selectedIndex = 0;
@@ -38,6 +40,7 @@ class PageManagerState extends State<PageManager> {
         ),
         body: _widgets[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
@@ -50,6 +53,10 @@ class PageManagerState extends State<PageManager> {
             BottomNavigationBarItem(
               icon: Icon(Icons.favorite),
               label: 'Favorite',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart),
+              label: 'ShopList',
             ),
           ],
           currentIndex: _selectedIndex,

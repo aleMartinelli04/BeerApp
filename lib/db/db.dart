@@ -25,10 +25,10 @@ class Database {
       join(await getDatabasesPath(), _dbName),
       onCreate: (db, version) {
         return db.execute(
-          "CREATE TABLE users(email TEXT PRIMARY KEY, password TEXT, favorites TEXT)",
+          "CREATE TABLE users(email TEXT PRIMARY KEY, password TEXT, favorites TEXT, shopList TEXT)",
         );
       },
-      version: 1,
+      version: 2,
     );
   }
 
@@ -111,11 +111,17 @@ class User {
   final String email;
   final String password;
   final List<int> favorites;
+  final List<int> shopList;
 
-  User(this.email, this.password, {this.favorites = const []});
+  User(this.email, this.password,
+      {this.favorites = const [], this.shopList = const []});
 
   List<int> getFavorites() {
     return favorites;
+  }
+
+  List<int> getShopList() {
+    return shopList;
   }
 
   void addFavorite(int id) {
@@ -130,11 +136,24 @@ class User {
     }
   }
 
+  void addShopList(int id) {
+    shopList.add(id);
+    Database().updateUser(this);
+  }
+
+  void removeShopList(int id) {
+    if (shopList.contains(id)) {
+      shopList.remove(id);
+      Database().updateUser(this);
+    }
+  }
+
   Map<String, dynamic> toMap() {
     return {
       "email": email,
       "password": password,
-      "favorites": getFavorites().join('-'),
+      "favorites": favorites.join('-'),
+      "shopList": shopList.join('-'),
     };
   }
 
@@ -148,11 +167,16 @@ class User {
       favorites.add(int.parse(id));
     }
 
-    return User(map['email'], map['password'], favorites: favorites);
-  }
+    List<int> shopList = [];
+    for (var id in map['shopList'].split('-')) {
+      if (id == "") {
+        break;
+      }
 
-  @override
-  String toString() {
-    return "User: $email, password: $password, favorites: ${getFavorites().join(", ")}";
+      shopList.add(int.parse(id));
+    }
+
+    return User(map['email'], map['password'],
+        favorites: favorites, shopList: shopList);
   }
 }

@@ -19,6 +19,9 @@ class BeerCardState extends State<BeerCard> {
     bool isFavorite =
         Database().currentUser.getFavorites().contains(widget._beer.id);
 
+    bool isShopList =
+        Database().currentUser.getShopList().contains(widget._beer.id);
+
     var leading = widget._beer.image == null
         ? const Icon(Icons.image)
         : Image.network(widget._beer.image!);
@@ -32,19 +35,38 @@ class BeerCardState extends State<BeerCard> {
     return Card(
       child: ListTile(
         leading: leading,
-        trailing: IconButton(
-          icon: isFavorite
-              ? const Icon(Icons.favorite, color: Colors.red)
-              : const Icon(Icons.favorite_border),
-          onPressed: () {
-            setState(() => isFavorite = !isFavorite);
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: isFavorite
+                  ? const Icon(Icons.favorite, color: Colors.red)
+                  : const Icon(Icons.favorite_border),
+              onPressed: () {
+                setState(() => isFavorite = !isFavorite);
 
-            if (isFavorite) {
-              Database().currentUser.addFavorite(widget._beer.id);
-            } else {
-              Database().currentUser.removeFavorite(widget._beer.id);
-            }
-          },
+                if (isFavorite) {
+                  Database().currentUser.addFavorite(widget._beer.id);
+                } else {
+                  Database().currentUser.removeFavorite(widget._beer.id);
+                }
+              },
+            ),
+            IconButton(
+              icon: isShopList
+                  ? const Icon(Icons.shopping_bag, color: Colors.green)
+                  : const Icon(Icons.shopping_bag_outlined),
+              onPressed: () {
+                setState(() => isShopList = !isShopList);
+
+                if (isShopList) {
+                  Database().currentUser.addShopList(widget._beer.id);
+                } else {
+                  Database().currentUser.removeShopList(widget._beer.id);
+                }
+              },
+            ),
+          ],
         ),
         title: Text(widget._beer.name),
         subtitle: subtitle,

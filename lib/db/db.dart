@@ -141,6 +141,10 @@ class User {
   static User fromMap(Map<String, dynamic> map) {
     List<int> favorites = [];
     for (var id in map['favorites'].split('-')) {
+      if (id == "") {
+        break;
+      }
+
       favorites.add(int.parse(id));
     }
 

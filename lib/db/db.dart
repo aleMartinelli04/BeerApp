@@ -18,8 +18,6 @@ class Database {
   get currentUser => _currentUser;
 
   Future<void> setup() async {
-    getDatabasesPath().then((path) => print(path));
-
     _database = openDatabase(
       join(await getDatabasesPath(), "beer_app.db"),
       onCreate: (db, version) {

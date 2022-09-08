@@ -3,6 +3,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -27,8 +28,11 @@ class MapPageState extends State<MapPage> {
           width: 40,
           height: 40,
           point: LatLng(brewery.latitude, brewery.longitude),
-          builder: (context) => Image.network(
-                "https://cdn-icons-png.flaticon.com/512/184/184482.png",
+          builder: (context) => InkWell(
+                child: Image.network(
+                  "https://cdn-icons-png.flaticon.com/512/184/184482.png",
+                ),
+                onTap: () => launchUrl(Uri.parse(brewery.link)),
               )));
       setState(() {
         markers = newMarkers;

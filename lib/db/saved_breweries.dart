@@ -12,7 +12,7 @@ class SavedBreweries {
 
   late final List<Brewery> _breweries = [
     Brewery(
-      id: 1,
+      link: "https://goo.gl/maps/Sx12nW4s5DyfDBdC8",
       name: "Revel",
       image:
           "https://lh5.googleusercontent.com/p/AF1QipPrDvwHhNZNebG13n6ZKB8ZKPRw4ouKiWxjPHpe=w408-h306-k-no",
@@ -21,16 +21,16 @@ class SavedBreweries {
       longitude: 9.589361858038654,
     ),
     Brewery(
-      id: 2,
-      name: "iBirrattieri",
+      link: "https://goo.gl/maps/JET7szcW5EwNZpVr6",
+      name: "Birreria Nuovo Faro",
       image:
-          "https://lh5.googleusercontent.com/p/AF1QipNPD8d19EuzUK_YOmQ-D4gIJj8d4OGzlNEVajY=w408-h408-k-no",
-      city: "Treviglio",
-      latitude: 45.52199195862417,
-      longitude: 9.588787256422028,
+          "https://lh5.googleusercontent.com/p/AF1QipOAcHjK1Z_PJOj1ggkcsrV4JbqO-q3FtHRKEd1C=w408-h544-k-no",
+      city: "Lodi",
+      latitude: 45.33664399614847,
+      longitude: 9.487007585622967,
     ),
     Brewery(
-      id: 3,
+      link: "https://goo.gl/maps/aD9WdSd26hVRiVMC9",
       name: "Bierfabrik Milano",
       image:
           "https://lh5.googleusercontent.com/p/AF1QipNNKlINYWMuT8kzX9w8RZxh0EUStWOLg0qhQKFU=w408-h725-k-no",
@@ -39,7 +39,7 @@ class SavedBreweries {
       longitude: 9.212605611770785,
     ),
     Brewery(
-      id: 4,
+      link: "https://goo.gl/maps/wHqeXWFDU4b4Btj89",
       name: "Hog Beer",
       image:
           "https://lh5.googleusercontent.com/p/AF1QipOqmthPl4SYI6byzBDa3JZi_dXVUfg2nPogvw08=w426-h240-k-no",
@@ -48,7 +48,7 @@ class SavedBreweries {
       longitude: 9.622432872273277,
     ),
     Brewery(
-      id: 5,
+      link: "https://goo.gl/maps/gzaYH2wna7eefg6Q6",
       name: "Amos Platz",
       image:
           "https://lh5.googleusercontent.com/p/AF1QipNk-vqudAkJD2qf4Ww9G8zaG9y0yXehHdUw3YQ-=w408-h544-k-no",
@@ -57,7 +57,7 @@ class SavedBreweries {
       longitude: 9.690991797501342,
     ),
     Brewery(
-      id: 6,
+      link: "https://goo.gl/maps/tMp3uJiFGKuRdTxS8",
       name: "Half Crown Pub",
       image:
           "https://lh5.googleusercontent.com/p/AF1QipPkCV1MH6arUt3UnsuGzWS8Nkbc7n7spO3_u6dC=w408-h272-k-no",
@@ -84,7 +84,7 @@ class SavedBreweries {
 }
 
 class Brewery {
-  final int id;
+  final String link;
   final String name;
   final String image;
   final String city;
@@ -92,7 +92,7 @@ class Brewery {
   final double longitude;
 
   Brewery({
-    required this.id,
+    required this.link,
     required this.name,
     required this.image,
     required this.city,
@@ -101,26 +101,4 @@ class Brewery {
   });
 
   get latLong => LatLng(latitude, longitude);
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'name': name,
-      'image': image,
-      'city': city,
-      'latitude': latitude,
-      'longitude': longitude,
-    };
-  }
-
-  static Brewery fromMap(Map<String, dynamic> map) {
-    return Brewery(
-      id: int.parse(map['id']),
-      name: map['name'],
-      image: map['image'],
-      city: map['city'],
-      latitude: double.parse(map['latitude']),
-      longitude: double.parse(map['longitude']),
-    );
-  }
 }

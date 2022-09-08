@@ -3,7 +3,9 @@ import 'package:BeerApp/pages/page_manager.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  Database().setup().then((value) => runApp(const BeerApp()));
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Database().setup().then((_) => runApp(const BeerApp()));
 }
 
 class BeerApp extends StatelessWidget {

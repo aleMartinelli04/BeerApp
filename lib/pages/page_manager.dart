@@ -1,14 +1,15 @@
 import 'package:BeerApp/api/punk_api.dart';
 import 'package:BeerApp/pages/homepage.dart';
+import 'package:BeerApp/pages/infinite_scroll_page.dart';
 import 'package:BeerApp/pages/login_page.dart';
 import 'package:BeerApp/pages/profile_page.dart';
 import 'package:BeerApp/pages/search_page.dart';
-import 'package:BeerApp/pages/infinite_scroll_page.dart';
 import 'package:flutter/material.dart';
 
 import '../db/db.dart';
 import '../utilities/beer_card.dart';
 import '../utilities/exception_alert.dart';
+import 'map_page.dart';
 
 class PageManager extends StatefulWidget {
   const PageManager({super.key});
@@ -23,6 +24,7 @@ class PageManagerState extends State<PageManager> {
     const SearchPage(),
     _createFavoritesPage(),
     _createShopListPage(),
+    const MapPage(),
   ];
 
   int _selectedIndex = 0;
@@ -65,6 +67,10 @@ class PageManagerState extends State<PageManager> {
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart),
               label: 'ShopList',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.pin_drop),
+              label: 'Map',
             ),
           ],
           currentIndex: _selectedIndex,

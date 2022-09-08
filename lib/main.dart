@@ -1,10 +1,9 @@
 import 'package:BeerApp/db/db.dart';
-import 'package:BeerApp/pages/login_page.dart';
+import 'package:BeerApp/pages/page_manager.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const BeerApp());
-  Database().setup();
+  Database().setup().then((value) => runApp(const BeerApp()));
 }
 
 class BeerApp extends StatelessWidget {
@@ -15,6 +14,6 @@ class BeerApp extends StatelessWidget {
     return MaterialApp(
         title: 'Beer App',
         theme: ThemeData(primarySwatch: Colors.brown),
-        home: const LoginPage());
+        home: const PageManager());
   }
 }

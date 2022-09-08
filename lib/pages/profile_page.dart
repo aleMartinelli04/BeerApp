@@ -1,6 +1,8 @@
 import 'package:BeerApp/db/db.dart';
 import 'package:flutter/material.dart';
 
+import 'login_page.dart';
+
 class ProfilePage extends StatefulWidget {
   final User user = Database().currentUser;
 
@@ -84,8 +86,11 @@ class ProfilePageState extends State<ProfilePage> {
                 child: ElevatedButton(
                   child: const Text('Logout'),
                   onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
+                    Database().logout().then((value) {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const LoginPage()));
+                    });
                   },
                 ),
               ),

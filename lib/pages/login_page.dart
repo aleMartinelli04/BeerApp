@@ -52,8 +52,8 @@ class LoginPageState extends State<LoginPage> {
                   }
 
                   Database().checkUser(mail, password).then((value) {
-                    Database().login(mail, password).then((value) {
-                      Navigator.of(context).push(
+                    Database().login(mail).then((value) {
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) {
                           return const PageManager();
                         }),

@@ -16,6 +16,8 @@ class HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    super.initState();
+
     setState(() {
       content = [
         const Center(

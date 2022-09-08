@@ -12,9 +12,9 @@ class Database {
   Database._internal();
 
   late final _database;
-  final String _dbName = "beer_app.db";
+  late final _lastUserDatabase;
 
-  late User _currentUser;
+  User? _currentUser;
 
   get currentUser => _currentUser;
 
@@ -22,7 +22,7 @@ class Database {
     WidgetsFlutterBinding.ensureInitialized();
 
     _database = openDatabase(
-      join(await getDatabasesPath(), _dbName),
+      join(await getDatabasesPath(), "beer_app.db"),
       onCreate: (db, version) {
         return db.execute(
           "CREATE TABLE users(email TEXT PRIMARY KEY, password TEXT, favorites TEXT, shopList TEXT)",
@@ -30,6 +30,32 @@ class Database {
       },
       version: 2,
     );
+
+    _lastUserDatabase = openDatabase(
+      join(await getDatabasesPath(), "last_user.db"),
+      onCreate: (db, version) {
+        return db.execute(
+          "CREATE TABLE last_user(access TEXT PRIMARY KEY, email TEXT)",
+        );
+      },
+      version: 1,
+    );
+
+    _currentUser = await getLastUser();
+  }
+
+  Future<User?> getLastUser() async {
+    final db = await _lastUserDatabase;
+
+    final List<Map<String, dynamic>> maps = await db.query('last_user');
+
+    if (maps.isEmpty) {
+      return null;
+    }
+
+    String mail = maps[0]['email'];
+
+    return await getUser(mail);
   }
 
   Future<void> addUser(String email, String password) async {
@@ -91,8 +117,27 @@ class Database {
     return User.fromMap(maps[0]);
   }
 
-  Future<void> login(String email, String password) async {
+  Future<void> login(String email) async {
     _currentUser = await getUser(email);
+
+    final db = await _lastUserDatabase;
+
+    await db.insert(
+      'last_user',
+      {
+        'access': 'last_user',
+        'email': email,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> logout() async {
+    _currentUser = null;
+
+    final db = await _lastUserDatabase;
+
+    await db.delete('last_user', where: "access = ?", whereArgs: ['last_user']);
   }
 
   Future<void> updateUser(User user) async {

@@ -1,9 +1,11 @@
 import 'package:BeerApp/pages/homepage.dart';
+import 'package:BeerApp/pages/login_page.dart';
 import 'package:BeerApp/pages/profile_page.dart';
 import 'package:BeerApp/pages/search_page.dart';
 import 'package:BeerApp/pages/shoplist_page.dart';
 import 'package:flutter/material.dart';
 
+import '../db/db.dart';
 import 'favorite_beers_page.dart';
 
 class PageManager extends StatefulWidget {
@@ -25,6 +27,10 @@ class PageManagerState extends State<PageManager> {
 
   @override
   Widget build(BuildContext context) {
+    if (Database().currentUser == null) {
+      return const LoginPage();
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('BeerApp'),

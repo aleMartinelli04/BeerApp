@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -19,7 +18,7 @@ class Database {
   get currentUser => _currentUser;
 
   Future<void> setup() async {
-    WidgetsFlutterBinding.ensureInitialized();
+    getDatabasesPath().then((path) => print(path));
 
     _database = openDatabase(
       join(await getDatabasesPath(), "beer_app.db"),

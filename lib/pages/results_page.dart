@@ -47,6 +47,7 @@ class ResultsPageState extends State<ResultsPage> {
         _pagingController.appendPage(beers, nextPageKey);
       }
     } on Exception catch (e) {
+      Navigator.pop(context);
       showDialog(
           context: context,
           builder: ExceptionAlertDialog(e).build);

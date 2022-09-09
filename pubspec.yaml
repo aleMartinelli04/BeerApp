@@ -47,6 +47,9 @@ dependencies:
   geolocator: ^9.0.1
   card_swiper: ^2.0.4
   url_launcher: ^6.1.5
+  firebase_messaging: ^13.0.1
+  firebase_core: ^1.22.0
+  flutter_local_notifications: ^9.9.1
 
 flutter_icons:
   android: "launcher_icon"
